@@ -23,6 +23,7 @@ module Read
 
       @url = ARGV[0]
       if @url.nil? || @url.strip == ""
+        @asked_for_url = false
         ask_for_url
       end
     end
@@ -31,8 +32,12 @@ module Read
       while @url.nil? || @url.strip == ""
         feedback = "Please tell me what page to read: "
         print feedback
-        #say feedback
+
+        if @asked_for_url
+          say feedback
+        end
         @url = gets.chomp
+        @asked_for_url = true
       end
       get_article
     end
@@ -71,7 +76,7 @@ module Read
       puts "\n----------"
       @article_content_stripped.each_char do |char|
         print char
-        sleep 0.07
+        sleep 0.06
       end
 
       if defined?(@read_thread) and @read_thread.alive?
@@ -80,17 +85,18 @@ module Read
     end
 
     def read_article
-      `say "#{@article_content_stripped}"`
+      say @article_content_stripped
       if defined?(@print_thread) and @print_thread.alive?
         Thread.kill(@print_thread)
       end
     end
 
-    def say(command, voice=nil)
+    def say(command, voice="Samantha")
       command = "\"#{command}\""
       unless voice.nil?
         command += " -v #{voice}"
       end
+
       `say #{command}`
     end
   end
