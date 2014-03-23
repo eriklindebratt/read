@@ -6,6 +6,12 @@ rescue LoadError
   Process.exit(1)
 end
 
+begin require 'cgi'
+rescue LoadError
+  puts 'Can\'t locate `cgi` RubyGem. Please install it.'
+  Process.exit(1)
+end
+
 begin require_relative "./readability_token"
 rescue LoadError
   puts "Can't locate Readability API token in `Read::READABILITY_TOKEN`. Make sure it's set."
@@ -60,7 +66,7 @@ module Read
       # remove HTML tags and surrounding whitespace
       @article_content_stripped = [
         "#{article.title||""}\n\n\n\n\n\n\n",
-        article.content.gsub(/<\/?[^>]*>/, "").strip
+        CGI.unescapeHTML(article.content.gsub(/<\/?[^>]*>/, "")).strip
       ].join
 
       # start reading
