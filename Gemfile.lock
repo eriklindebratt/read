@@ -1,0 +1,16 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    hashie (3.0.0)
+    multi_json (1.10.1)
+    oauth (0.4.7)
+    readit (0.1.0)
+      hashie
+      multi_json
+      oauth
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  readit (~> 0.1.0)
